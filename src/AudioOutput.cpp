@@ -5,7 +5,6 @@ AudioOutput::AudioOutput(audio::DeviceRef device)
 {
 	if (device) {
 		mDevice = device;
-		auto format_mono = audio::Node::Format().channels(1);
 		auto ctx = audio::Context::master();
 		if (device) {
 			ci::app::console() << "selected " << device->getName() << std::endl;

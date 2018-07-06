@@ -21,7 +21,9 @@
 *
 */
 
+#if defined(CINDER_MSW)
 #include <windows.h>
+#endif
 #include "cinder/app/App.h"
 #include "cinder/app/RendererGl.h"
 #include "cinder/gl/gl.h"
@@ -183,8 +185,7 @@ void AudioInputSelectApp::changeOutput(string output)
 
 void AudioInputSelectApp::updateUi()
 {
-	ImGuiWindowFlags_ winFlags;
-
+	
 	{
 		ui::ScopedWindow window("Audio Input", vec2(500, 263), 0.85);
 		static int item2 = -1;
@@ -225,7 +226,6 @@ void AudioInputSelectApp::updateUi()
 		output->update();
 		ui::ScopedWindow window(output->getName(), vec2(440, 120));
 		ImGui::Columns(1, "statscols", false);
-		ImVec2 size = ImGui::GetItemRectSize();
 		int i = 0;
 		ImGui::PushItemWidth(380);
 		for (auto &spectrum : output->spectrums()) {
@@ -249,9 +249,9 @@ void AudioInputSelectApp::draw()
 	gl::clear(Color(0, 0, 0));
 }
 
-CINDER_APP( AudioInputSelectApp, RendererGl(RendererGl::Options().msaa(8)), [](App::Settings * settings) {
+CINDER_APP( AudioInputSelectApp, RendererGl, [](App::Settings * settings) {
 	settings->setBorderless(false);
-	settings->setConsoleWindowEnabled(true);
+	//settings->setConsoleWindowEnabled(true);
 	settings->setWindowSize(600, 768);
 	settings->setTitle("Audio selector");
 })

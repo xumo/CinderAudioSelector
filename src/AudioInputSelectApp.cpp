@@ -68,14 +68,6 @@ class AudioInputSelectApp : public App {
 	std::string						mSelectedOutput;
 };
 
-static auto vector_getter = [](void* vec, int idx, const char** out_text)
-{
-	auto& vector = *static_cast<std::vector<std::string>*>(vec);
-	if (idx < 0 || idx >= static_cast<int>(vector.size())) { return false; }
-	*out_text = vector.at(idx).c_str();
-	return true;
-};
-
 void AudioInputSelectApp::setup()
 {
 	ui::Options	options;
@@ -114,7 +106,9 @@ void AudioInputSelectApp::update()
 		ui::ScopedWindow window("Audio Input", vec2(500, 263), 0.85);
 		static int item2 = -1;
 		ui::Text("Select an audio input");
-		ImGui::ListBox("Devices", &item2, vector_getter, static_cast<void*>(&mDevices), mDevices.size());
+		//ImGui::ListBox("Devices", &item2, vector_getter, static_cast<void*>(&mDevices), mDevices.size());
+		ui::Combo("Audio Input Devices", &item2, mDevices, mDevices.size());
+
 		bool select = ImGui::Button("Select");
 		if (select) {
 			if (item2 >= 0 && item2 < mDevices.size()) {
